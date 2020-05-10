@@ -1,6 +1,9 @@
 package com.daixia.leetcode;
 public class Q6 {
-    public static String convert(String s, int numRows) {
+    public String convert(String s, int numRows) {
+        if(s.length() <= numRows || numRows == 1){
+            return s;
+        }
         int direction = 1;
         int count = 0;
         StringBuilder[] res = new StringBuilder[numRows];
@@ -26,8 +29,5 @@ public class Q6 {
     }
 
     public static void main(String[] args) {
-        String res = convert("PAYPALISHIRING", 4);
-        System.out.println("PINALSIGYAHRPI");
-        System.out.println(res);
     }
 }

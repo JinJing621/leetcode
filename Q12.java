@@ -1,91 +1,55 @@
 package com.daixia.leetcode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Q12 {
+    private static Map<Integer, String> romanMap = new HashMap<Integer, String>();
+    static{
+        romanMap.put(1, "I");
+        romanMap.put(4, "IV");
+        romanMap.put(5, "V");
+        romanMap.put(9, "IX");
+        romanMap.put(10, "X");
+        romanMap.put(40, "XL");
+        romanMap.put(50, "L");
+        romanMap.put(90, "XC");
+        romanMap.put(100, "C");
+        romanMap.put(400, "CD");
+        romanMap.put(500, "D");
+        romanMap.put(900, "CM");
+        romanMap.put(1000, "M");
+    }
     public String intToRoman(int num) {
-        String[] res = new String[10];
-        int i=0;
-        while(num>0){
-            int temp = num%10;
-            int p = (int)Math.pow(10,i);
-            if(temp<4){
-                StringBuilder roman = new StringBuilder();
-                switch(p){
-                    case 1:
-                        for(int j=0; j<temp; j++){
-                            roman.append("I");
-                        }
-                        res[i] = roman.toString();
-                        break;
-                    case 10:
-                        for(int j=0; j<temp; j++){
-                            roman.append("X");
-                        }
-                        res[i] = roman.toString();
-                        break;
-                    case 100:
-                        for(int j=0; j<temp; j++){
-                            roman.append("C");
-                        }
-                        res[i] = roman.toString();
-                        break;
-                    case 1000:
-                        for(int j=0; j<temp; j++){
-                            roman.append("M");
-                        }
-                        res[i] = roman.toString();
-                        break;
-                }
-            }else if(temp == 4){
-                switch(p){
-                    case 1:
-                        res[i] = "IV";break;
-                    case 10:
-                        res[i] = "XL";break;
-                    case 100:
-                        res[i] = "CD";break;
-                }
-            }else if(temp >= 5 && temp<9){
-                StringBuilder roman = new StringBuilder();
-                switch(p){
-                    case 1:
-                        roman.append("V");
-                        for(int j=0; j<temp-5; j++){
-                            roman.append("I");
-                        }
-                        res[i] = roman.toString();
-                        break;
-                    case 10:
-                        roman.append("L");
-                        for(int j=0; j<temp-5; j++){
-                            roman.append("X");
-                        }
-                        res[i] = roman.toString();
-                        break;
-                    case 100:
-                        roman.append("D");
-                        for(int j=0; j<temp-5; j++){
-                            roman.append("C");
-                        }
-                        res[i] = roman.toString();
-                        break;
-                }
-            }else{
-                switch(p){
-                    case 1:
-                        res[i] = "IX";break;
-                    case 10:
-                        res[i] = "XC";break;
-                    case 100:
-                        res[i] = "CM";break;
-                }
+        int dividend = 1000;
+        StringBuilder res = new StringBuilder();
+        while(dividend > 0){
+            res.append(subRoman(num/dividend, dividend));
+            num = num % dividend;
+            dividend = dividend / 10;
+        }
+        return res.toString();
+    }
+
+    private String subRoman(int temp, int key){
+        if(temp == 0){
+            return "";
+        }
+        StringBuilder res = new StringBuilder("");
+        if(temp >=1 && temp < 4){
+            while(temp > 0){
+                res.append(romanMap.get(key));
+                temp--;
             }
-            i++;
-            num/=10;
+        } else if(temp >= 5 && temp < 9){
+            res.append(romanMap.get(5*key));
+            while(temp - 5 > 0){
+                res.append(romanMap.get(key));
+                temp--;
+            }
+        }else{
+            res.append(romanMap.get(temp*key));
         }
-        StringBuilder finalRes = new StringBuilder();
-        for(int k=i-1;k>=0;k--){
-            finalRes.append(res[k]);
-        }
-        return finalRes.toString();
+        return res.toString();
     }
 }
